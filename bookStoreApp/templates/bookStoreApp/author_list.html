@@ -7,7 +7,7 @@
 </head>
 <body>
     {% for author in author_list %}
-        {{ author.full_name }}
+        <b>Name:</b> <a href="/app/author/{{author.id}}" target="_self">{{ author.full_name }}</a> <br>
     {% endfor %}
 </body>
 </html>

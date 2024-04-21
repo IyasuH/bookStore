@@ -6,9 +6,9 @@
     <title>Document</title>
 </head>
 <body>
-    {{ book.title }}
-    {{ book.author }}
-    {{ book.description }}
-    {{ book.price }}
+    <b>Title:</b> {{ book.title }}</br>
+    <b>Author:</b> <a href="/app/author/{{book.author.id}}">{{ book.author }}</a> </br>
+    <b>Description:</b> {{ book.description }}</br>
+    <b>Price:</b> {{ book.price }}</br>
 </body>
 </html>

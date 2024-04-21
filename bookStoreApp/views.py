@@ -8,13 +8,14 @@ from django.contrib.auth import authenticate, login as login_auth, logout as log
 
 from django.views.generic import ListView, CreateView, DetailView
 
-from .models import Book, Author
+from .models import Book, Author, Order
+from .forms import BookCreateForm, OrderCreateForm
 
 class SignUp(CreateView):
     model=User
     form_class=UserCreationForm
     template_name='bookStoreApp/signup.html'
-    success_url='/login/'
+    success_url='/app/login/'
 
 def login(request):
     """
@@ -41,12 +42,22 @@ def logout(request):
     logout_Auth(request)
     return redirect("list_books")
 
+# Books
+
 class ListBooks(ListView):
     model=Book
     paginate_by=10
 
+class CreateBook(CreateView):
+    model=Book
+    form_class=BookCreateForm
+    template_name='bookStoreApp/_create.html'
+    success_url='/app/books/'
+
 class DetailBook(DetailView):
     model=Book
+
+# Authors
 
 class ListAuthor(ListView):
     model=Author
@@ -55,6 +66,13 @@ class ListAuthor(ListView):
 class DetailAuthor(DetailView):
     model=Author
 
+# Orders
+
+class CreateOrder(CreateView):
+    model=Order
+    form_class=OrderCreateForm
+    template_name='bookStoreApp/_create.html'
+    success_url='/app/books/'
 
 def addReview():
     """

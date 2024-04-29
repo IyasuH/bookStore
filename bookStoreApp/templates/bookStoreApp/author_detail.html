@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends "bookStoreApp/base.html" %}
+{% load static %}
+{% block content %}
     <b>Name:</b> {{ author.full_name }}<br>
     <b>Bio:</b> {{ author.bio }}<br>
     <b>Gender:</b> {{ author.gender }}<br>
     <b>DOB:</b> {{ author.dob }}<br>
-</body>
-</html>
+{% endblock %}

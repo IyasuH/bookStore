@@ -1,14 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <b>Title:</b> {{ book.title }}</br>
-    <b>Author:</b> <a href="/app/author/{{book.author.id}}">{{ book.author }}</a> </br>
+{% extends "bookStoreApp/base.html" %}
+{% block content %}
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+        <div class="col-md-4">
+            <img src="../../static/{{ book.cover_image }}" class="img-fluid rounded-start" alt="book cover image">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+            <h5 class="card-title">{{ book.title }}</h5>
+            <p class="card-text">{{ book.description|slice:":100"}}</p>
+            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            <p class="card-text"><small class="text-body-secondary">{{ book.author.full_name}}</small></p>
+                <p class="card-text">Categories: </p><br>
+                {% for category in book.categories.all %}
+                <ul>
+                    <li>{{ category.name }}</li>
+                </ul>
+                {% endfor %}
+            <b>Price:</b> {{ book.price }}</br>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- <b>Title:</b> {{ book.title }}</br>
+    <b>Author:</b> <a href="{% url 'author_deatil' book.author.id %}">{{ book.author }}</a> </br>
     <b>Description:</b> {{ book.description }}</br>
-    <b>Price:</b> {{ book.price }}</br>
-</body>
-</html>
+    <b>Categories: </b><br>
+    {% for category in book.categories.all %}
+    <ul>
+        <li>{{ category.name }}</li>
+    </ul>
+    {% endfor %}
+    <!-- <b>Categories</b> {{ book.categories.name }}<br> -->
+    <b>Price:</b> {{ book.price }}</br> -->
+{% endblock %}

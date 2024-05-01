@@ -1,8 +1,30 @@
 {% extends "bookStoreApp/base.html" %}
 {% load static %}
 {% block content %}
-    <b>Name:</b> {{ author.full_name }}<br>
-    <b>Bio:</b> {{ author.bio }}<br>
-    <b>Gender:</b> {{ author.gender }}<br>
-    <b>DOB:</b> {{ author.dob }}<br>
+    <div class="card mb-3" style="margin: 0.5rem 3rem; padding: 1rem 1rem;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="../../static/bookStoreApp/images/{{ author.photo }}"
+                class="img-fluid rounded-start" alt="author cover image">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h4 class="card-title">{{ author.full_name }}</h4>
+                    <p class="card-text">{{ author.bio|slice:":100"}}</p>
+                    <p class="card-text"><small class="text-body-secondary">DoB: {{ author.dob }}</small></p><br>
+                    <p class="card-text"><small class="text-body-secondary">updated at: {{ author.updated_at}}</small></p>
+                    <br>
+                    Books<br>
+                    <!-- books still not dispalying work from views -->
+                    {% for book in books %}
+                        <b>{{ review.user }}</b> <br>
+                        {{ review.comment }}<br>
+                        {{ review.rating }}
+                        at {{ review.updated_at }}
+                        <br><br>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

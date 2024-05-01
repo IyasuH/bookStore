@@ -1,25 +1,38 @@
 {% extends "bookStoreApp/base.html" %}
 {% block content %}
-    <div class="card mb-3" style="max-width: 540px;">
+    <div class="card mb-3" style="margin: 0.5rem 3rem; padding: 1rem 1rem;">
         <div class="row g-0">
-        <div class="col-md-4">
-            <img src="../../static/{{ book.cover_image }}" class="img-fluid rounded-start" alt="book cover image">
-        </div>
-        <div class="col-md-8">
-            <div class="card-body">
-            <h5 class="card-title">{{ book.title }}</h5>
-            <p class="card-text">{{ book.description|slice:":100"}}</p>
-            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-            <p class="card-text"><small class="text-body-secondary">{{ book.author.full_name}}</small></p>
-                <p class="card-text">Categories: </p><br>
-                {% for category in book.categories.all %}
-                <ul>
-                    <li>{{ category.name }}</li>
-                </ul>
-                {% endfor %}
-            <b>Price:</b> {{ book.price }}</br>
+            <div class="col-md-4">
+                <img src="../../static/bookStoreApp/images/{{ book.cover_image }}" class="img-fluid rounded-start" alt="book cover image">
             </div>
-        </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h4 class="card-title">{{ book.title }}</h4>
+                    <p class="card-text">{{ book.description|slice:":100"}}</p>
+                    <p class="card-text"><small class="text-body-secondary">updated at: {{book.updated_at}}</small></p>
+                    <!-- <p class="card-text">{{ book.author.full_name}}</p> -->
+                    <p class="card-text"><a href="{% url 'author_deatil' book.author.id %}">{{ book.author }}</a></p>
+                    <p class="card-text">Categories: </p>
+                    {% for category in book.categories.all %}
+                        <ul>
+                            <li>{{ category.name }}</li>
+                        </ul>
+                    {% endfor %}
+                    <p>ETB {{ book.price }}</p>
+                    <a href="#" class="btn btn-primary">Add to Cart</a>
+                    <br>Avg rating: {{ avg_rating }}<br>
+                    Num rating: {{ review_number }}<br>
+                    <br>
+                    Reviews<br>
+                    {% for review in reviews %}
+                        <b>{{ review.user }}</b> <br>
+                        {{ review.comment }}<br>
+                        {{ review.rating }}
+                        at {{ review.updated_at }}
+                        <br><br>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
     <!-- <b>Title:</b> {{ book.title }}</br>
@@ -31,6 +44,6 @@
         <li>{{ category.name }}</li>
     </ul>
     {% endfor %}
-    <!-- <b>Categories</b> {{ book.categories.name }}<br> -->
-    <b>Price:</b> {{ book.price }}</br> -->
+    <b>Categories</b> {{ book.categories.name }}<br> -->
+    <!-- <b>Price:</b> {{ book.price }}</br>  -->
 {% endblock %}

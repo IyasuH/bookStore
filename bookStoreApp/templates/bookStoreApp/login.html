@@ -1,20 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form method="POST">
+{% extends "bookStoreApp/base_login_signup.html" %}
+{% load static %}
+{% block content %}
+<div style="max-width: 400px; background-color: 
+    whitesmoke; padding: 2em;
+    border-radius: 2%;">
+    <h3 style="text-align: center;">Login</h3><br>
+    <form method="POST" class="row g-3">
         {% csrf_token %}
-        <label for="userName">User Name</label>
-        <input type="text" id="userName" name="username">
+        <label for="userName" class="form-label">User Name</label>
+        <input class="form-control" type="text" id="userName" name="username">
         <br>
-        <label for="userPassword">User Password</label>
-        <input type="password" id="userPassword" name="password">
+        <label class="form-label" for="userPassword">User Password</label>
+        <input class="form-control" type="password" id="userPassword" name="password">
         <br>
-        <button type="submit">Login</button>
+        <button class="btn btn-primary" type="submit">Login</button>
         {% if messages %}
         <ul>
             {% for message in messages %}
@@ -23,5 +22,5 @@
         </ul>
         {% endif %}
     </form>
-</body>
-</html>
+</div>
+{% endblock %}

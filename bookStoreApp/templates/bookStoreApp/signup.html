@@ -1,15 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form method="POST">
+{% extends "bookStoreApp/base_login_signup.html" %}
+{% load static %}
+{% block content %}
+<div style="max-width: 600px; background-color: 
+    whitesmoke; padding: 2em;
+    border-radius: 2%;
+    ">
+    <h3 style="text-align: center;">SignUp</h3><br>
+    <form method="POST" class="row g-3">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Signup</button>
+        {% for field in form %}
+        <div class="form-group">
+            {% if field.label_tag %}
+                <span class="form-label">{{ field.label_tag}}</span>
+            {% endif %}
+            {{ field }}
+            {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}            
+        </div>
+        {% endfor %}
+        <!-- {{ form.as_p }} -->
+        <button class="btn btn-primary" type="submit">Signup</button>
     </form>
-</body>
-</html>
+</div>
+{% endblock %}

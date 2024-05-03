@@ -33,5 +33,6 @@ urlpatterns = [
     path("", include("bookStoreApp.urls")),
     path("api/", include(router.urls)),
     path("api-auth/", include('rest_framework.urls', namespace='rest_framework')),
-    staticfiles_urlpatterns()
 ]
+
+urlpatterns += staticfiles_urlpatterns()

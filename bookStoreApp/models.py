@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from djmoney.models.fields import MoneyField
 
 class Author(models.Model):
     # id - auto increment generated id
@@ -38,7 +39,8 @@ class Book(models.Model):
     title = models.CharField(max_length=100)
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True)
     description = models.TextField()
-    price = models.DecimalField(decimal_places=2, max_digits=6)
+    price = MoneyField(max_digits=10, decimal_places=2, default_currency="ETB")
+    # price = models.DecimalField(decimal_places=2, max_digits=6)
     cover_image = models.ImageField(upload_to='book_cover/', null=True, blank=True)
     categories = models.ManyToManyField(Category, blank=True)
     # timestamp
@@ -74,8 +76,11 @@ class Payment(models.Model):
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True) # order id
     stripe_transaction_id = models.CharField(max_length=300) # stripe transaction id
     status = models.CharField(max_length=50) # pending, succeede, failed
-    amount = models.DecimalField(decimal_places=2, max_digits=7) # 100
+    amount = MoneyField(max_digits=10, decimal_places=2, default_currency="ETB")
+    # amount = models.DecimalField(decimal_places=2, max_digits=7) # 100
     currency = models.CharField(max_length=10, default="ETB") # ETB
+    # why currency conversion rate -- conevrsion from what currency ?? - what was i thinking - 
+    # i think i just copied the return values from stripe 
     currency_conversion_rate = models.DecimalField(decimal_places=4, max_digits=12) # conversion rate to ETB
     payment_method = models.CharField(max_length=100) # debit card, credit card, other walets,...
     # timestamp

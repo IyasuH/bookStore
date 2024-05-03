@@ -41,8 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookStoreApp',
     'rest_framework',
-    'bookStoreAPI'
+    'bookStoreAPI',
+    'djmoney',
 ]
+
+# Django-money custom deserializer
+
+SERIALIZATION_MODULES = {"json": "djmoney.serializers"}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -80,18 +85,54 @@ WSGI_APPLICATION = 'bookStore.wsgi.application'
 
 load_dotenv()
 
+# local db
 database_user = os.getenv("DB_USER")
 database_password = os.getenv("DB_PASSWORD")
 database_port = os.getenv("DB_PORT")
 
+# Neon db
+database_host_neon = os.getenv("PG_HOST")
+database_name_neon = os.getenv("PG_DATABASE")
+database_user_neon = os.getenv("PG_USER")
+database_password_neon = os.getenv("PG_PASSWORD")
+database_port_neon = os.getenv("PG_PORT")
+
+# Render db
+render_host = os.getenv("RD_HOST")
+render_database = os.getenv("RD_DATABASE")
+render_user = os.getenv("RD_USER")
+render_password = os.getenv("RD_PASSWORD")
+render_port = os.getenv("RD_PORT")
+
 DATABASES = {
-    'default': {
+    # Neon
+    'neon': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': database_name_neon,
+        'USER': database_user_neon,
+        'PASSWORD': database_password_neon,
+        'HOST': database_host_neon,
+        'PORT': database_port_neon,
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
+    },
+    'local': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'book_store',
         'USER': database_user,
         'PASSWORD': database_password,
         'HOST': 'localhost',
-        'POSRT': database_port
+        'PORT': database_port
+    },
+    # Render - seems load quiker than Neon
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': render_database,
+        'USER': render_user,
+        'PASSWORD': render_password,
+        'HOST': render_host,
+        'PORT': render_port
     }
 }
 

@@ -106,25 +106,27 @@ render_port = os.getenv("RD_PORT")
 
 DATABASES = {
     # Neon
-    'neon': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': database_name_neon,
-        'USER': database_user_neon,
-        'PASSWORD': database_password_neon,
-        'HOST': database_host_neon,
-        'PORT': database_port_neon,
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
-    },
-    'local': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'book_store',
-        'USER': database_user,
-        'PASSWORD': database_password,
-        'HOST': 'localhost',
-        'PORT': database_port
-    },
+
+    # 'neon': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': database_name_neon,
+    #     'USER': database_user_neon,
+    #     'PASSWORD': database_password_neon,
+    #     'HOST': database_host_neon,
+    #     'PORT': database_port_neon,
+    #     'OPTIONS': {
+    #         'sslmode': 'require',
+    #     },
+    # },
+    # 'local': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'book_store',
+    #     'USER': database_user,
+    #     'PASSWORD': database_password,
+    #     'HOST': 'localhost',
+    #     'PORT': database_port
+    # },
+
     # Render - seems load quiker than Neon
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

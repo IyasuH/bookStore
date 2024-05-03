@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-b-sx0!!4tfs68jl!1&xu6k19z!tll^c#oh947ex*bnlfe=eof@
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "https://bookstore-0jgj.onrender.com/"]
+    "https://bookstore-0jgj.onrender.com"]
 
 
 # Application definition

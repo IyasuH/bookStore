@@ -1,5 +1,5 @@
 from typing import Any
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
@@ -9,8 +9,8 @@ from django.contrib.auth import authenticate, login as login_auth, logout as log
 from django.views.generic import ListView, CreateView, DetailView
 from django.db.models import Q
 
-from .models import Book, Author, Order, Category
-from .forms import BookCreateForm, OrderCreateForm
+from .models import Book, Author, Order, Category, Review
+from .forms import BookCreateForm, OrderCreateForm, UpdateAccountForm
 
 class SignUp(CreateView):
     model=User
@@ -30,7 +30,7 @@ def login(request):
         auth_user = authenticate(request, username=username, password=password)
         if auth_user is not None:
             login_auth(request, auth_user)
-            return redirect('list_authors')
+            return redirect('list_books')
         else:
             messages.error(request, "Wrong username or password")
     return render(request, "bookStoreApp/login.html")
@@ -43,6 +43,24 @@ def logout(request):
     logout_Auth(request)
     return redirect("list_books")
 
+def account(request):
+    """
+    user account to see their data including 
+    - user info
+    - purchase history
+    - reviews
+    - carts
+    """
+    if not request.user.is_authenticated:
+        return redirect('login')
+    detail = get_object_or_404(User, pk=request.user.id)
+    # User.objects.get(pk=request.user.id)
+    form = UpdateAccountForm(request.POST or None, instance=detail)
+    if form.is_valid():
+        form.save()
+    return render(request, "bookStoreApp/account.html", {"form":form})    
+    
+
 # Books
 class ListBooks(ListView):
     model=Book
@@ -52,6 +70,8 @@ class ListBooks(ListView):
         category_query = self.request.GET.get('category')
         queryvalue = super().get_queryset()
         if search_query:
+            # because of the following error i am unable to search based on category, Author
+            # Unsupported lookup 'contains' for ForeignKey or join on the field not permitted 
             queryvalue = Book.objects.filter(Q(description__contains=search_query) | Q(title__contains=search_query))
         elif category_query:
             queryvalue = Book.objects.filter(categories__name__icontains=category_query)
@@ -68,7 +88,27 @@ class CreateBook(CreateView):
     success_url='/books/'
 
 class DetailBook(DetailView):
-    model=Book
+    model=Book        
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        # book_id = 
+        id_value = self.object.id
+        # print("[INFO] book_id: ", id_value)
+
+        # context['id'] = id_value
+        context['reviews'] = Review.objects.filter(book_id=id_value).all()
+        list_review = list(context['reviews'])
+        print("reviews: ", list(context['reviews']))
+        tot_rating = 0
+        num_rating = len(list_review)
+        for review in list_review:
+            tot_rating += review.rating
+            print(review.rating)
+        if num_rating != 0:
+            context['avg_rating'] = round((tot_rating/num_rating),  2)
+        context['avg_rating'] = 0
+        context['review_number'] = num_rating
+        return context
 
 # Authors
 class ListAuthor(ListView):

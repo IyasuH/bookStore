@@ -16,7 +16,8 @@ class Author(models.Model):
     )
     dob = models.DateField()
     bio = models.TextField()
-    photo = models.ImageField(upload_to='author_photo/', null=True, blank=True)
+    photo = models.CharField(max_length=100, null=True) # i am pulling images from imgur
+    # photo = models.ImageField(upload_to='author_photo/', null=True, blank=True)
     # timestamp
     created_at = models.DateTimeField(auto_now_add=True,)
     updated_at = models.DateTimeField(auto_now=True)
@@ -41,7 +42,8 @@ class Book(models.Model):
     description = models.TextField()
     price = MoneyField(max_digits=10, decimal_places=2, default_currency="ETB")
     # price = models.DecimalField(decimal_places=2, max_digits=6)
-    cover_image = models.ImageField(upload_to='book_cover/', null=True, blank=True)
+    cover_image = models.CharField(max_length=100, null=True)
+    # cover_image = models.ImageField(upload_to='book_cover/', null=True, blank=True)
     categories = models.ManyToManyField(Category, blank=True)
     # timestamp
     created_at = models.DateTimeField(auto_now_add=True)

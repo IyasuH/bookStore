@@ -13,7 +13,7 @@
         <div class="container row">
         {% for book in book_list %}
             <div class="card" style="width: 18rem; margin: 1rem;">
-                <img src="../../static/bookStoreApp/images/{{ book.cover_image }}" class="card-img-top" alt="book cover image">
+                <img src="{{ book.cover_image }}" class="card-img-top" alt="book cover image">
                 <div class="card-body">
                     <a href="{% url 'book_detail' book.id %}" target="_self"><h5 class="card-title">{{ book.title }}</h5></a>
                     <p class="card-text" style="font-size: 14px;">{{ book.description|slice:":100" }}</p>

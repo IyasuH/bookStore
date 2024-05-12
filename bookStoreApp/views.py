@@ -59,7 +59,6 @@ def account(request):
     if form.is_valid():
         form.save()
     return render(request, "bookStoreApp/account.html", {"form":form})    
-    
 
 # Books
 class ListBooks(ListView):

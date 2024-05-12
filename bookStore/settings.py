@@ -22,10 +22,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-b-sx0!!4tfs68jl!1&xu6k19z!tll^c#oh947ex*bnlfe=eof@'
+
+# SECRET_KEY = 'django-insecure-b-sx0!!4tfs68jl!1&xu6k19z!tll^c#oh947ex*bnlfe=eof@'
+
+from django.core.management.utils import get_random_secret_key
+
+SECRET_KEY = get_random_secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -85,9 +91,9 @@ WSGI_APPLICATION = 'bookStore.wsgi.application'
 load_dotenv()
 
 # local db
-database_user = os.getenv("DB_USER")
+database_user     = os.getenv("DB_USER")
 database_password = os.getenv("DB_PASSWORD")
-database_port = os.getenv("DB_PORT")
+database_port     = os.getenv("DB_PORT")
 
 # Neon db
 database_host_neon = os.getenv("PG_HOST")

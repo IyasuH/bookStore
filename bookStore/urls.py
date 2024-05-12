@@ -29,10 +29,10 @@ router.register(r'order', views.OrderViewSet)
 router.register(r'review', views.ReviewViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin-nonsense-panel/', admin.site.urls), # should /admin/ is to obvious 
     path("", include("bookStoreApp.urls")),
-    path("api/", include(router.urls)),
-    path("api-auth/", include('rest_framework.urls', namespace='rest_framework')),
+    path("my-api-url/", include(router.urls)), # same reason as the admin
+    path("api-auth-url/", include('rest_framework.urls', namespace='rest_framework')),  # same reason as the admin
 ]
 
 urlpatterns += staticfiles_urlpatterns()

@@ -6,7 +6,7 @@
     whitesmoke; padding: 2em;
     border-radius: 2%;">
     <h3 style="text-align: center;">Account</h3><br>
-    <form action="POST" action="{% url 'account' %}">
+    <form method="POST" action="{% url 'account' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Update</button>

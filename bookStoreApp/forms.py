@@ -1,5 +1,5 @@
 from django import forms
-from .models import Book, Author, Order
+from .models import Book, Author, Order, Review
 from django.contrib.auth.models import User
 from django.utils import timezone
 
@@ -10,6 +10,21 @@ class BookCreateForm(forms.ModelForm):
         model = Book
         # fields = ('id', 'title', 'description', 'price', 'cover_image', 'created_at', 'updated_at', 'author_id')
         exclude = ('id', 'created_at', 'updated_at')
+
+class AuthorCreateForm(forms.ModelForm):
+    """
+    """
+    class Meta:
+        model = Author
+        exclude = ('id', 'created_at', 'updated_at')
+
+class ReviewCreateForm(forms.ModelForm):
+    """
+    """
+    class Meta:
+        model = Review
+        exclude = ('id', 'created_at', 'updated_at')
+    
 
 class OrderCreateForm(forms.ModelForm):
     """

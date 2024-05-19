@@ -10,16 +10,19 @@
         <label for="userName" class="form-label">User Name</label>
         <input class="form-control" type="text" id="userName" name="username">
         <br>
-        <label class="form-label" for="userPassword">User Password</label>
+        <label class="form-label" for="userPassword">Password</label>
         <input class="form-control" type="password" id="userPassword" name="password">
         <br>
         <button class="btn btn-primary" type="submit">Login</button>
+        <p style="text-align: center;">Your first time, you can create an account <a href="/signup/">here</a></p>
+        <input type="button" class="btn btn-secondary" onclick="location.href='/signup/';" value="Go to Sign up" />
+        <!-- <button ></button> -->
         {% if messages %}
-        <ul>
+        <div style="text-align: center;">
             {% for message in messages %}
-            <li>{{ message }}</li>
+            <span style="padding: .05rem;">{{ message }}</span>
             {% endfor %}
-        </ul>
+        </div>
         {% endif %}
     </form>
 </div>

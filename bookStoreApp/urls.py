@@ -16,5 +16,11 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('my_account/', views.account, name='account'),
     # orders
-    path('new_order/', views.CreateOrder.as_view(), name="new_order")
+    path('new_order/', views.CreateOrder.as_view(), name="new_order"),
+    # buy_book
+    path('buy_book/<int:book_id>/', views.buy_book, name="buy_book"),
+    # payment_verify
+    path('verify_payment/<str:tx_ref>/', views.check_payemnt, name="check_payemnt"),
+    # review
+    path('write_review/<int:book_id>/', views.addReview, name="write_review"),
 ]

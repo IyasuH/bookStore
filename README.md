@@ -4,7 +4,7 @@
 
 Django learning project.
 
-![Alt text](https://imgur.com/a/4zwquZs.jpg)
+![Screenshoot  of the site](screen_shoot/home.png)
 
 **bookStore** is a django based book store  website you can check it out [here](https://bookstore-0jgj.onrender.com/) "bookStore").
 
@@ -32,7 +32,11 @@ Django learning project.
    - database host
    - database name
 6. Create [chapa](https://chapa.co/ "Chapa") account for test payment integration and save the API public and secret key as chapa_public_key and chapa_secret_key (you can name whatever you want but be sure to update that on your code too).
-7. Run  ``python manage.py runserver``
+7. Run 
+
+   ```
+   python manage.py runserver
+   ```
 
 ### Tech Stacks
 

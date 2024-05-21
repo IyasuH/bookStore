@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as login_auth, logout as logout_Auth
+from django.core.paginator import Paginator
 
 from django.views.generic import ListView, CreateView, DetailView
 from django.db.models import Q
@@ -26,6 +27,7 @@ URL = "https://bookstore-0jgj.onrender.com/"
 CHAPA_SECRET = os.getenv("chapa_secret_key")
 
 class SignUp(CreateView):
+    """create new user"""
     model=User
     form_class=UserCreationForm
     template_name='bookStoreApp/signup.html'
@@ -73,12 +75,14 @@ def account(request):
     return render(request, "bookStoreApp/account.html", {"form":form})    
 
 def generete_tx_ref(length):
-    #Generate a transaction reference
+    """Generate a transaction reference for chapa"""
     tx_ref = string.ascii_lowercase
     return ''.join(random.choice(tx_ref) for i in range(length))
 
 def check_payemnt(request, tx_ref):
     """
+    to check the payment using transaction reference for chapa
+    - then to create data on payment table
     """
     url = f"https://api.chapa.co/v1/transaction/verify/{tx_ref}"
     payload = ''
@@ -98,7 +102,7 @@ def check_payemnt(request, tx_ref):
 
 def buy_book(request, book_id):
     """
-    When buy button clicked
+    When buy button clicked, will redirects to chapa payment page(test currently)
     """
     if not request.user.is_authenticated:
         # user not authenticated redirect to login page
@@ -157,10 +161,18 @@ def buy_book(request, book_id):
 
 # Books
 class ListBooks(ListView):
+    """
+    list books with 10 objects per page 
+    """
+    
     model=Book
     paginate_by=10
     template_name = "bookStoreApp/book_list.html"
     def get_queryset(self):
+        """
+        to handle the search and category query
+        """
+        
         search_query = self.request.GET.get('search')
         category_query = self.request.GET.get('category')
         queryvalue = super().get_queryset()
@@ -170,13 +182,16 @@ class ListBooks(ListView):
             queryvalue = Book.objects.filter(Q(description__contains=search_query) | Q(title__contains=search_query))
         elif category_query:
             queryvalue = Book.objects.filter(categories__name__icontains=category_query)
-        return queryvalue   
+        return queryvalue
+
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        """to list categories"""
         context =  super().get_context_data(**kwargs) 
         context['categories'] = Category.objects.all()
         return context
 
 class CreateBook(CreateView):
+    """To create book using the defined form[BookCreateForm]"""
     model=Book
     form_class=BookCreateForm
     template_name='bookStoreApp/_create.html'
@@ -190,44 +205,86 @@ class CreateBook(CreateView):
             return redirect("login")
         return super().get(request, *args, **kwargs)        
 
+class CreateAuthor(CreateView):
+    """to create author using the defined form[AuthorCreateForm]"""
+    model=Author
+    form_class=AuthorCreateForm
+    template_name='bookStoreApp/_create.html'
+    success_url ='/authors/'
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.info(request, "you have to login first")
+            return redirect("login")
+        elif not request.user.is_staff:
+            messages.info(request, "you don't have access to do that")
+            return redirect("login")
+        return super().get(request, *args, **kwargs)        
+
+
 class DetailBook(DetailView):
     model=Book
     template_name = "bookStoreApp/book_detail.html"
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        """
+        to list reviews for specifc book
+        """
         context = super().get_context_data(**kwargs)
         # book_id = 
         id_value = self.object.id
-        context['reviews'] = Review.objects.filter(book_id=id_value).all()
-        list_review = list(context['reviews'])
-        print("reviews: ", list(context['reviews']))
-        tot_rating = 0
-        num_rating = len(list_review)
-        for review in list_review:
-            tot_rating += review.rating
-            print(review.rating)
-        if num_rating != 0:
-            context['avg_rating'] = round((tot_rating/num_rating),  2)
-        context['avg_rating'] = 0
-        context['review_number'] = num_rating
+        reviews = Review.objects.filter(book_id=id_value).all()
+
+        paginator = Paginator(reviews, 10)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        
+        context['reviews'] = page_obj
+        context['avg_rating'] = self.calculate_avg_rating(list(context['reviews']))
+        context['review_number'] = reviews.count()
+
         return context
+    
+    def calculate_avg_rating(self, reviews):
+        """
+        calculates average rating
+        """
+        tot_rating = sum(review.rating for review in reviews)
+        num_ratings = len(reviews)
+        if num_ratings != 0:
+            return round(tot_rating/num_ratings, 2)
+        else:
+            return 0
 
 # Authors
 class ListAuthor(ListView):
     model=Author
     paginate_by=10
+    template_name="bookStoreApp/author_list.html"
 
 class DetailAuthor(DetailView):
     model=Author
+    template_name="bookStoreApp/author_detail.html"
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        """
+        to list books writen by the author
+        """
+        context = super().get_context_data(**kwargs)
+        id_value = self.object.id        
+        books = Book.objects.filter(author=id_value).all()
+
+        context['books'] = books
+
 
 # Orders
-class CreateOrder(CreateView):
-    model=Order
-    form_class=OrderCreateForm
-    template_name='bookStoreApp/_create.html'
-    success_url='/books/'
+# i don't think this will be needed
+# class CreateOrder(CreateView):
+#     model=Order
+#     form_class=OrderCreateForm
+#     template_name='bookStoreApp/_create.html'
+#     success_url='/books/'
 
 def addReview(request, book_id):
     """
+    handles add review
     """
     if request.method == "POST":
         """
@@ -241,12 +298,10 @@ def addReview(request, book_id):
         print(f"[INFO] book_id: {book_id}, \n user: {request.user}")
 
         book_ = get_object_or_404(Book, id=book_id)
-        
+
         rating_val = request.POST.get("rating")
-        print(f"[INFO] rating_val, {rating_val}")
         # comment_val = request.POST.get("comment")
         form_ = ReviewCreateForm(request.POST)
-        print("[INFO] ", form_)
         if form_.is_valid():
             isinstance = form_.save(commit=False)
 
@@ -256,7 +311,5 @@ def addReview(request, book_id):
             form_.save()
 
         return redirect("book_detail", pk=book_id)
-    
-    return redirect("list_books")
 
-    
+    return redirect("list_books")

@@ -9,11 +9,12 @@
         <div>
             {% for category in categories %}
                 <a href="/?category={{category.name}}" class="nav-link">{{ category.name }}</a>
+                <br>
             {% endfor %}
         </div>
-        <div class="container row">
+        <div class="container row" style="margin-left: 4rem;">
         {% for book in book_list %}
-            <div class="card" style="width: 18rem; margin: 1rem;">
+            <div class="card" style="width: 18rem; margin: 1rem; border: 0px">
                 <img src="{{ book.cover_image }}" class="card-img-top" alt="book cover image">
                 <div class="card-body">
                     <a href="{% url 'book_detail' book.id %}" target="_self"><h5 class="card-title">{{ book.title }}</h5></a>

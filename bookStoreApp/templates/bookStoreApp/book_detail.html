@@ -19,46 +19,39 @@
                         </ul>
                     {% endfor %}
                     <p>{{ book.price }}</p>
-                    <a href="#" class="btn btn-primary">Add to Cart</a>
+                    <a href="{% url 'buy_book' book.id%}" class="btn btn-success" target="_blank">Buy</a>
+                    <br>
                     <br>Avg rating: {{ avg_rating }}<br>
                     Num rating: {{ review_number }}<br>
                     <br>
-                    Reviews<br>
+                    Reviews<br><br>
                     {% for review in reviews %}
-                        <b>{{ review.user }}</b> <br>
-                        {{ review.comment }}<br>
-                        {{ review.rating }}
-                        at {{ review.updated_at }}
-                        <br><br>
+                        <b>By: </b>{{ review.user }}<br>
+                        <b>Rating: </b> {{ review.rating }}<br>
+                        <b>Comment: </b> {{ review.comment }}<br>
+                        <p class="card-text"><small class="text-body-secondary">{{ review.created_at }}</small></p>
                     {% endfor %}
                 </div>
             </div>
         </div>
     </div>
-    <div>
+    <div style="margin: 0.5rem 3rem; padding: 1rem 1rem; display: flex;">
         <form action="{% url 'write_review' book.id %}" method="POST">
+            <h4>Review</h4>
+            <p>feel free to add your review</p>
             {% csrf_token %}
-            
-            <label for="book">book</label>
             <input type="hidden" value="{{ book.id }}" name="book">
-            <label for="user"></label>
             <input type="hidden" value="{{ user.id }}" name="user">
-            <label for="rating"></label>
-            <input type="number" name="rating" placeholder="Rating value">
-            <label for="comment">Your Comment</label>
-            <textarea name="comment" row="2" placeholder="here you can write you comments..."></textarea>
-            <button type="submit" class="btn btn-primary">Comment</button>
-        </form>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label"></label>
+              <input type="number" name="rating" placeholder="Rating value" max="10">
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Your Comment</label>
+              <br>
+              <textarea name="comment" row="2" placeholder="here you can write you comments..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
     </div>
-    <!-- <b>Title:</b> {{ book.title }}</br>
-    <b>Author:</b> <a href="{% url 'author_deatil' book.author.id %}">{{ book.author }}</a> </br>
-    <b>Description:</b> {{ book.description }}</br>
-    <b>Categories: </b><br>
-    {% for category in book.categories.all %}
-    <ul>
-        <li>{{ category.name }}</li>
-    </ul>
-    {% endfor %}
-    <b>Categories</b> {{ book.categories.name }}<br> -->
-    <!-- <b>Price:</b> {{ book.price }}</br>  -->
 {% endblock %}

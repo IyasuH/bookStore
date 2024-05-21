@@ -15,19 +15,24 @@
                 <input type="text" name="search" id="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
-            <div>
+            <div style="display: flex; flex-direction: row; justify-content: space-between;">
                 {% if request.user.is_authenticated %}
-                    <a href="/logout" class="nav-link">Logout</a>
-                    <a href="/my_account" class="nav-link">Account</a>
-                    <a href="/my_cart" class="nav-link">My Cart</a>
+                    <a href="/logout" class="nav-link" style="padding-left: 1em;">Logout</a>
+                    <br>
+                    <a href="/my_account" class="nav-link" style="padding-left: 1em;">Account</a>
+                    <br>
+                    <a href="/my_cart" class="nav-link" style="padding-left: 1em;">My Cart</a>
+                    <br>
                     {% else %}
-                    <a href="/login" class="nav-link">Login</a>
-                    <a href="/signup" class="nav-link">SignUp</a>
+                    <a href="/login" class="nav-link" style="padding-left: 1em;">Login</a>
+                    <br>
+                    <a href="/signup" class="nav-link" style="padding-left: 1em;">SignUp</a>
                 {% endif %}
 
                 {% if request.user.is_staff %}
-                    <a href="/new_book" class="nav-link">New Book</a>
-
+                    <a href="/new_book" class="nav-link" style="padding-left: 1em;">New Book</a>
+                    <br>
+                    <a href="/new_author" class="nav-link" style="padding-left: 1em;">New Author</a>
                 {% endif %}
             </div>
         </header>

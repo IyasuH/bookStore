@@ -10,19 +10,14 @@
             <div class="col-md-8">
                 <div class="card-body">
                     <h4 class="card-title">{{ author.full_name }}</h4>
-                    <p class="card-text">{{ author.bio|slice:":100"}}</p>
+                    <p class="card-text">{{ author.bio }}</p>
                     <p class="card-text"><small class="text-body-secondary">DoB: {{ author.dob }}</small></p><br>
                     <p class="card-text"><small class="text-body-secondary">updated at: {{ author.updated_at}}</small></p>
                     <br>
-                    Books<br>
                     <!-- books still not dispalying work from views -->
-                    {% for book in books %}
-                        <b>{{ review.user }}</b> <br>
-                        {{ review.comment }}<br>
-                        {{ review.rating }}
-                        at {{ review.updated_at }}
-                        <br><br>
-                    {% endfor %}
+                    <!-- {% for book in books %}
+                        {{ book.title }}
+                    {% endfor %} -->
                 </div>
             </div>
         </div>

@@ -3,5 +3,5 @@ env
 .env
 *.sqlite3
 *.jpg
-*.png
+# *.png
 *.sql

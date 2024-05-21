@@ -31,7 +31,7 @@ router.register(r'review', views.ReviewViewSet)
 urlpatterns = [
     path('admin-nonsense-panel/', admin.site.urls), # should /admin/ is to obvious 
     path("", include("bookStoreApp.urls")),
-    path("my-api-url/", include(router.urls)), # same reason as the admin
+    path("api/", include(router.urls)), # same reason as the admin
     path("api-auth-url/", include('rest_framework.urls', namespace='rest_framework')),  # same reason as the admin
 ]
 

@@ -1,32 +1,48 @@
 # bookStore
 
-### Project Overvoew
+### Project Overview
 
-bookStore is a website based book store
+Django learning project.
+
+![Alt text](https://imgur.com/a/4zwquZs.jpg)
+
+**bookStore** is a django based book store  website you can check it out [here](https://bookstore-0jgj.onrender.com/) "bookStore").
 
 ### Prerequisities
 
-- Python 3
-- PostgreSQL
+- Python3
+- PostgreSQL DB
+- Chapa test account
 
 ### Installation And Setup
 
-1. **clone this repo**
-2. install the requirments by running
+1. Clone this repo
+2. Craete your own virtual enviroment and activate it
+3. Install all requirments by running
 
    ```
    pip install -r requirements.txt
    ```
-3. configure PostgreSQL
-4. 
+4. Configure PostgreSQL DB locally or on free other platforms like [render](https://render.com/ "render"), [neon](https://neon.tech/ "neon").
+5. And save the following database info on your .env file, and update the settings.py file DATABASES accordingly.
+
+   - database user name
+   - database password
+   - database port
+   - database host
+   - database name
+6. Create [chapa](https://chapa.co/ "Chapa") account for test payment integration and save the API public and secret key as chapa_public_key and chapa_secret_key (you can name whatever you want but be sure to update that on your code too).
+7. Run  ``python manage.py runserver``
 
 ### Tech Stacks
 
 - Django
 - PostgreSQL
-- 
+- Chapa
 
 ### API Endpoints
+
+Currently the website is running based on bookStoreApp, but i also defined the API endpoints using DRF.
 
 - **GET** */api/books/* - to list books
 - **GET** */api/books/{id}* - to get details of one book
